@@ -1,10 +1,8 @@
 package com.techelevator;
 
-
 public class VendingMachineItem {
     public String itemName;
     public double itemPrice;
-    public String itemSound;
     public String itemType;
     public int remainingStock;
 
@@ -13,21 +11,26 @@ public class VendingMachineItem {
         this.itemPrice = itemPrice;
         this.itemType = itemType;
         this.remainingStock	= remainingStock;
-
-        if(this.itemType.equals("Candy")) {			// create if statements to apply sounds to each item
-            this.itemSound 	= "Munch, Munch, Yum!";
-        }
-        if(this.itemType.equals("Chip")) {
-            this.itemSound	= "Crunch, Crunch, Yum!";
-        }
-        if(this.itemType.equals("Drink")) {
-            this.itemSound 	= "Glug, Glug, Yum!";
-        }
-        if(this.itemType.equals("Gum")) {
-            this.itemSound 	= "Chew, Chew, Yum!";
-        }
-
         //Do getters for everything and setter for remaining stock since it will change
+    }
 
+    public String GetSound(){
+        if(this.itemType.equals("Candy")) {			// create if statements to apply sounds to each item
+            return "Munch, Munch, Yum!";
+        }
+
+        if(this.itemType.equals("Chip")) {
+            return "Crunch, Crunch, Yum!";
+        }
+
+        if(this.itemType.equals("Drink")) {
+            return "Glug, Glug, Yum!";
+        }
+
+        if(this.itemType.equals("Gum")) {
+            return "Chew, Chew, Yum!";
+        }
+
+        return null;
     }
 }

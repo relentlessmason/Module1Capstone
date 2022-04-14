@@ -1,6 +1,6 @@
 package com.techelevator.view;
 
-//import com.techelevator.TypeOfItem;
+
 import com.techelevator.VendingMachineItem;
 
 import java.io.InputStream;
@@ -30,7 +30,7 @@ public class Menu {
 		vendingMachineItems.put("B3", new VendingMachineItem("Wonka Bar", 1.50,"Candy",5));
 		vendingMachineItems.put("B4", new VendingMachineItem("Crunchie", 1.75,"Candy",5));
 		vendingMachineItems.put("C1", new VendingMachineItem("Cola", 1.25,"Drink",5));
-		vendingMachineItems.put("C2", new VendingMachineItem("Dr. Salt", 1.50,"Drink",5));
+		vendingMachineItems.put("C2", new VendingMachineItem("Dr. Salt", 1.50,"Drinkk",5));
 		vendingMachineItems.put("C3", new VendingMachineItem("Mountain Melter", 1.50,"Drink",5));
 		vendingMachineItems.put("C4", new VendingMachineItem("Heavy", 1.50,"Drink",5));
 		vendingMachineItems.put("D1", new VendingMachineItem("U-Chews", .85,"Gum",5));
