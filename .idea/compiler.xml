@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="USE_RELEASE_OPTION" value="false" />
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="m1-java-capstone-vending-machine" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="11">
+      <module name="m1-java-capstone-vending-machine" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="m1-java-capstone-vending-machine" options="--add-exports java.xml/com.sun.org.apache.xalan.internal.lib=ALL-UNNAMED" />
+    </option>
+  </component>
+</project>
