@@ -3,7 +3,7 @@ package com.techelevator;
 public class VendingMachineItem {
     public String itemName;
     public double itemPrice;
-    public String itemType;
+    public static String itemType;
     public int remainingStock;
 
     public VendingMachineItem(String itemName, double itemPrice, String itemType, int remainingStock) {
@@ -21,7 +21,7 @@ public class VendingMachineItem {
         return itemPrice;
     }
 
-    public String getItemType() {
+    public static String getItemType() {
         return itemType;
     }
 
@@ -29,20 +29,20 @@ public class VendingMachineItem {
         return remainingStock;
     }
 
-    public String GetSound(){
-        if(this.itemType.equals("Candy")) {			// create if statements to apply sounds to each item
+    public static String GetSound(){
+        if(itemType.equals("Candy")) {			// create if statements to apply sounds to each item
             return "Munch, Munch, Yum!";
         }
 
-        if(this.itemType.equals("Chip")) {
+        if(itemType.equals("Chip")) {
             return "Crunch, Crunch, Yum!";
         }
 
-        if(this.itemType.equals("Drink")) {
+        if(itemType.equals("Drink")) {
             return "Glug, Glug, Yum!";
         }
 
-        if(this.itemType.equals("Gum")) {
+        if(itemType.equals("Gum")) {
             return "Chew, Chew, Yum!";
         }
 
