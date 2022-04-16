@@ -11,7 +11,22 @@ public class VendingMachineItem {
         this.itemPrice = itemPrice;
         this.itemType = itemType;
         this.remainingStock	= remainingStock;
-        //Do getters for everything and setter for remaining stock since it will change
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public double getItemPrice() {
+        return itemPrice;
+    }
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public int getRemainingStock() {
+        return remainingStock;
     }
 
     public String GetSound(){

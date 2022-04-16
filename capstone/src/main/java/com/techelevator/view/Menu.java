@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Menu {
 
@@ -38,6 +39,12 @@ public class Menu {
 		vendingMachineItems.put("D3", new VendingMachineItem("Chiclets", .75,"Gum",5));
 		vendingMachineItems.put("D4", new VendingMachineItem("Triplemint", .75,"Gum",5));
 	}
+
+//	public VendingMachineItem GetItem(String key) {
+//		Set<String> key = ve
+//		return null;
+//	}
+
 
 	public Object getChoiceFromOptions(Object[] options) {
 		Object choice = null;
