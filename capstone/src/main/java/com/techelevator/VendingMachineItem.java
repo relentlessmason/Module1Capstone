@@ -29,6 +29,8 @@ public class VendingMachineItem {
         return remainingStock;
     }
 
+
+
     public static String GetSound(){
         if(itemType.equals("Candy")) {			// create if statements to apply sounds to each item
             return "Munch, Munch, Yum!";
