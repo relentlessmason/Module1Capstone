@@ -36,6 +36,7 @@ public class Menu {
 		this.vendingMachineItems.put("D2", new VendingMachineItem("Little League Chew", .95,"Gum",5));
 		this.vendingMachineItems.put("D3", new VendingMachineItem("Chiclets", .75,"Gum",5));
 		this.vendingMachineItems.put("D4", new VendingMachineItem("Triplemint", .75,"Gum",5));
+
 	}
 
 	public VendingMachineItem getItem(String key) {
