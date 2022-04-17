@@ -128,17 +128,18 @@ public class VendingMachineCLI {
 				VendingMachineItem item = this.menu.getItem(codeEntered);
 				if(!codeEntered.equals(item)) {
 					System.out.println("Code number invalid. Please enter a valid code number.");
-				}
-				double price = item.getItemPrice();
-				if (balance <= 0) {
-					System.out.println("Please insert more money.");
 				} else {
-					balance = this.cashInput - price;
-					System.out.println(item.getItemName() + " has been dispensed.");
-					String soundBite = VendingMachineItem.GetSound(itemType);
-					System.out.println(soundBite);
-					System.out.println("You have $" + this.balance + " remaining.");
-					System.out.println();
+					double price = item.getItemPrice();
+					if (balance <= 0) {
+						System.out.println("Please insert more money.");
+					} else {
+						balance = this.cashInput - price;
+						System.out.println(item.getItemName() + " has been dispensed.");
+						String soundBite = VendingMachineItem.GetSound(itemType);
+						System.out.println(soundBite);
+						System.out.println("You have $" + this.balance + " remaining.");
+						System.out.println();
+					}
 				}
 				this.run(); //takes you back to the main menu (and you get to keep your money!)
 
