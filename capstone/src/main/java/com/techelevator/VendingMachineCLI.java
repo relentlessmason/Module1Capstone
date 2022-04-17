@@ -58,7 +58,7 @@ public class VendingMachineCLI {
 					}
 				}
 				else {
-					System.out.println("Please enter valid bills");
+					System.out.println("Invalid bills. Please enter bills of 1, 2, 5, or 10.");
 				}
 			}
 		}
