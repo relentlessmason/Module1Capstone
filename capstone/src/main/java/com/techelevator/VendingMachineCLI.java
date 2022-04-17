@@ -62,10 +62,14 @@ public class VendingMachineCLI {
 					System.out.println("You have $" + this.balance + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
 					String addMoreMoney = scanner.nextLine();
 					addMoreMoney = addMoreMoney.toLowerCase();
+					if(addMoreMoney.contentEquals("y")) {
+						System.out.println("Please enter the amount of cash you wish to input: (1, 2, 5, 10)");
+						double additionalMoney = Double.parseDouble(scanner.nextLine());
+						this.balance = this.balance + additionalMoney;
+					}
 					try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
 						writer.println(dateTime.format(now) + " FEED MONEY: " + cashInput + " " + balance);
 					}
-
 					if (addMoreMoney.contentEquals("n")) {
 						break;
 					}
@@ -100,7 +104,7 @@ public class VendingMachineCLI {
 	private void Exit(String choice) throws IOException, InterruptedException {
 		if (choice.equals(MAIN_MENU_EXIT)) { // this is what happens if you select 3 on the main menu
 			Scanner opt3 = new Scanner(System.in);
-			System.out.println("Are you sure you want to exit? :");
+			System.out.println("Are you sure you want to exit? Y or N :");
 			String rUSure = opt3.nextLine();
 			if (rUSure.equalsIgnoreCase("n") || rUSure.equalsIgnoreCase("no")) {
 				this.run();
@@ -167,12 +171,6 @@ public class VendingMachineCLI {
 					}
 				}
 				this.run(); //takes you back to the main menu (and you get to keep your money!)
-
-				//	System.out.println("Make another purchase?");
-				//	Scanner makeNewPurchase = new Scanner(System.in);
-				// if (makeNewPurchase.equals("y") || makeNewPurchase.equals("Y")) {
-				//		System.out.println(PURCHASE_MENU_OPTIONS);
-				// }
 
 			}
 		}
