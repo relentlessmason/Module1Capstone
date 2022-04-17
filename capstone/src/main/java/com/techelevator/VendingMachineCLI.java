@@ -45,13 +45,18 @@ public class VendingMachineCLI {
 				System.out.println("Please enter the amount of cash you wish to input: (1, 2, 5, 10)");
 				String cash = scanner.nextLine();
 				double doubleCash = Double.parseDouble(cash); // takes the user input and parses in into a usable double
+				if(cash.equals("1") || cash.equals("2") || cash.equals("5") ||  cash.equals("10")) {
+					this.balance = this.cashInput + doubleCash; // calculates balance available to make purchases
+					System.out.println("You have $" + this.balance + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
+					String addMoreMoney = scanner.nextLine();
+					addMoreMoney = addMoreMoney.toLowerCase();
 
-				this.balance = this.cashInput + doubleCash; // calculates balance available to make purchases
-				System.out.println("You have $" + this.balance + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
-				String addMoreMoney = scanner.nextLine();
-				addMoreMoney = addMoreMoney.toLowerCase();
-				if(addMoreMoney.contentEquals("n")){
-					break;
+					if (addMoreMoney.contentEquals("n")) {
+						break;
+					}
+				}
+				else {
+					System.out.println("Please enter valid bills");
 				}
 			}
 		}
@@ -85,7 +90,7 @@ public class VendingMachineCLI {
 				this.run();
 			} else if (rUSure.equalsIgnoreCase("y") || rUSure.equalsIgnoreCase("yes")) {
 				if (getBalance() > 0.00) {
-					//change(getBalance());
+//					PurchaseMenuOption3(purchaseChoice);
 				}
 				opt3.close();
 				System.out.println("Thank you for your purchase! Goodbye!");
