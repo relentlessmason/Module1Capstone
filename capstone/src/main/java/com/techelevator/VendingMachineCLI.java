@@ -140,7 +140,7 @@ public class VendingMachineCLI {
 
 					}
 					if (secondPath.equals("3")) {
-						double tracker = ((double) (getBalance()));
+						double tracker = getBalance();
 
 						double totalQuartersToReturn = 0;
 						double totalDimesToReturn = 0;

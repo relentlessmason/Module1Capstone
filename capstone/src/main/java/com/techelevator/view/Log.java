@@ -6,7 +6,7 @@ public class Log {
 
     public static void log(String message)throws FileNotFoundException{
 
-        String logPath = "resources\\placeholder.txt";
+        String logPath = "resources\\vendinglog.log";
         File logFile = new File(logPath);
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(logFile, true))){
