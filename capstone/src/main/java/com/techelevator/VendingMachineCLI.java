@@ -31,7 +31,7 @@ public class VendingMachineCLI {
 	private double balance;
 	private File menuOptions;
 	private double cashInput;
-	File vendingLog = new File("C:\\Users\\Jon\\Desktop\\Projects\\module-1-capstone\\capstone\\vendinglog.log");
+	File vendingLog = new File("capstone/log.txt");
 	DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 	LocalDateTime now = LocalDateTime.now();
 	DecimalFormat df = new DecimalFormat("0.00");
@@ -218,7 +218,7 @@ public class VendingMachineCLI {
 	}
 
 	public void run() throws InterruptedException, IOException {
-		this.menuOptions = new File("C:\\Users\\Jon\\Desktop\\Projects\\module-1-capstone\\capstone\\vendingmachine.csv");
+		this.menuOptions = new File("capstone/vendingmachine.csv");
 
 		while (true) {
 			String choice = (String) this.menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);

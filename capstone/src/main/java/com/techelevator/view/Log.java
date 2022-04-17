@@ -6,7 +6,7 @@
 //
 //    public static void log(String message)throws FileNotFoundException{
 //
-//        String logPath = "capstone/vendinglog.log";
+//        String logPath = "capstone/log.txt";
 //        File logFile = new File(logPath);
 //
 //        try (PrintWriter writer = new PrintWriter(new FileWriter(logFile, true))){
