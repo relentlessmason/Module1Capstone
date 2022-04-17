@@ -60,6 +60,9 @@ public class VendingMachineCLI {
 					System.out.println("You have $" + this.balance + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
 					String addMoreMoney = scanner.nextLine();
 					addMoreMoney = addMoreMoney.toLowerCase();
+					try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
+						writer.println(dateTime.format(now) + " FEED MONEY: " + cashInput + " " + balance);
+					}
 
 					if (addMoreMoney.contentEquals("n")) {
 						break;
@@ -68,9 +71,7 @@ public class VendingMachineCLI {
 				else {
 					System.out.println("Please enter valid bills");
 				}
-				try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-					writer.println(dateTime.format(now) + "FEED MONEY: " + cashInput + balance);
-				}
+
 			}
 		}
 		catch(Exception e){
@@ -146,7 +147,7 @@ public class VendingMachineCLI {
 				} else {
 					balance = this.cashInput - price;
 					try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-						writer.println(dateTime.format(now) + item.getItemName() + cashInput + balance);
+						writer.println(dateTime.format(now) + " " + item.getItemName() + cashInput + balance);
 					}
 					System.out.println(item.getItemName() + " has been dispensed.");
 					String soundBite = VendingMachineItem.GetSound(itemType);
@@ -186,9 +187,9 @@ public class VendingMachineCLI {
 				totalNickelsToReturn++;
 				tracker -= nickel;
 			}
-			try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-				writer.println(dateTime.format(now) + "GIVE GHANGE: " + balance + "0");
 			}
+		try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
+			writer.println(dateTime.format(now) + " GIVE GHANGE: " + balance + " 0");
 		}
 		this.balance = 0;
 
