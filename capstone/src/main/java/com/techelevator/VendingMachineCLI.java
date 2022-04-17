@@ -7,6 +7,8 @@ import java.util.Scanner;
 import java.io.*;
 import com.techelevator.VendingMachineItem;
 
+import static com.techelevator.VendingMachineItem.itemType;
+
 
 public class VendingMachineCLI {
 
@@ -45,7 +47,7 @@ public class VendingMachineCLI {
 				System.out.println("Please enter the amount of cash you wish to input: (1, 2, 5, 10)");
 				String cash = scanner.nextLine();
 				double doubleCash = Double.parseDouble(cash); // takes the user input and parses in into a usable double
-				if(cash.equals("1") || cash.equals("2") || cash.equals("5") ||  cash.equals("10")) {
+				if(cash.equals("1") || cash.equals("2") || cash.equals("5") || cash.equals("10")) {
 					this.balance = this.cashInput + doubleCash; // calculates balance available to make purchases
 					System.out.println("You have $" + this.balance + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
 					String addMoreMoney = scanner.nextLine();
@@ -88,11 +90,11 @@ public class VendingMachineCLI {
 			String rUSure = opt3.nextLine();
 			if (rUSure.equalsIgnoreCase("n") || rUSure.equalsIgnoreCase("no")) {
 				this.run();
-			} else if (rUSure.equalsIgnoreCase("y") || rUSure.equalsIgnoreCase("yes")) {
+			}
+			if (rUSure.equalsIgnoreCase("y") || rUSure.equalsIgnoreCase("yes")) {
 				if (getBalance() > 0.00) {
-//					PurchaseMenuOption3(purchaseChoice);
+					returningBalance();
 				}
-				opt3.close();
 				System.out.println("Thank you for your purchase! Goodbye!");
 			}
 		}
@@ -124,13 +126,16 @@ public class VendingMachineCLI {
 				System.out.println("Enter Item Code: ");
 				String codeEntered = itemSelect.nextLine().toUpperCase();
 				VendingMachineItem item = this.menu.getItem(codeEntered);
+				if(!codeEntered.equals(item)) {
+					System.out.println("Code number invalid. Please enter a valid code number.");
+				}
 				double price = item.getItemPrice();
-				balance = this.cashInput - price;
 				if (balance <= 0) {
 					System.out.println("Please insert more money.");
 				} else {
+					balance = this.cashInput - price;
 					System.out.println(item.getItemName() + " has been dispensed.");
-					String soundBite = VendingMachineItem.GetSound();
+					String soundBite = VendingMachineItem.GetSound(itemType);
 					System.out.println(soundBite);
 					System.out.println("You have $" + this.balance + " remaining.");
 					System.out.println();
@@ -146,35 +151,40 @@ public class VendingMachineCLI {
 			}
 		}
 	}
+	private void returningBalance() {
+		double tracker = getBalance();
+
+		double totalQuartersToReturn = 0;
+		double totalDimesToReturn = 0;
+		double totalNickelsToReturn = 0;
+
+		double quarter = .25;
+		double dime = .10;
+		double nickel = .05;
+		while (tracker > 0) {
+			if (tracker >= quarter) {
+				totalQuartersToReturn++;
+				tracker -= quarter;
+			} else if (tracker >= dime) {
+				totalDimesToReturn++;
+				tracker -= dime;
+			} else if (tracker >= nickel) {
+				totalNickelsToReturn++;
+				tracker -= nickel;
+			}
+		}
+		this.balance = 0;
+
+		System.out.println("Your change is " + totalQuartersToReturn + " quarters, " + totalDimesToReturn +
+				" dimes, " + "and " + totalNickelsToReturn + " nickles.");
+
+	}
 
 	private void PurchaseMenuOption3(String purchaseChoice){
 		if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
-			double tracker = getBalance();
-
-			double totalQuartersToReturn = 0;
-			double totalDimesToReturn = 0;
-			double totalNickelsToReturn = 0;
-
-			double quarter = .25;
-			double dime = .10;
-			double nickel = .05;
-			while (tracker > 0) {
-				if (tracker >= quarter) {
-					totalQuartersToReturn++;
-					tracker -= quarter;
-				} else if (tracker >= dime) {
-					totalDimesToReturn++;
-					tracker -= dime;
-				} else if (tracker >= nickel) {
-					totalNickelsToReturn++;
-					tracker -= nickel;
-				}
-			}
-			this.balance = 0;
-
-			System.out.println("Your change is " + totalQuartersToReturn + " quarters, " + totalDimesToReturn +
-					" dimes, " + "and " + totalNickelsToReturn + " nickles.");
+			returningBalance();
 		}
+
 	}
 
 	public void run() throws InterruptedException, FileNotFoundException {

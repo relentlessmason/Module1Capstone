@@ -31,20 +31,20 @@ public class VendingMachineItem {
 
 
 
-    public static String GetSound(){
-        if(itemType.equals("Candy")) {			// create if statements to apply sounds to each item
+    public static String GetSound(String itemType){
+        if(VendingMachineItem.itemType.equals("Candy")) {			// create if statements to apply sounds to each item
             return "Munch, Munch, Yum!";
         }
 
-        if(itemType.equals("Chip")) {
+        if(VendingMachineItem.itemType.equals("Chip")) {
             return "Crunch, Crunch, Yum!";
         }
 
-        if(itemType.equals("Drink")) {
+        if(VendingMachineItem.itemType.equals("Drink")) {
             return "Glug, Glug, Yum!";
         }
 
-        if(itemType.equals("Gum")) {
+        if(VendingMachineItem.itemType.equals("Gum")) {
             return "Chew, Chew, Yum!";
         }
 
