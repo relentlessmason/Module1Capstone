@@ -3,9 +3,14 @@ package com.techelevator;
 import com.techelevator.view.Menu;
 import java.io.FileNotFoundException;
 import java.sql.SQLOutput;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.io.*;
 import com.techelevator.VendingMachineItem;
+
 
 import static com.techelevator.VendingMachineItem.itemType;
 
@@ -25,6 +30,9 @@ public class VendingMachineCLI {
 	private double balance;
 	private File menuOptions;
 	private double cashInput;
+	File vendingLog = new File("capstone/vendinglog.log");
+	DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+	LocalDateTime now = LocalDateTime.now();
 
 	//getter & setter methods
 	public double getBalance() {
@@ -58,7 +66,10 @@ public class VendingMachineCLI {
 					}
 				}
 				else {
-					System.out.println("Invalid bills. Please enter bills of 1, 2, 5, or 10.");
+					System.out.println("Please enter valid bills");
+				}
+				try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
+					writer.println(dateTime.format(now) + "FEED MONEY: " + cashInput + balance);
 				}
 			}
 		}
@@ -83,10 +94,10 @@ public class VendingMachineCLI {
 		}
 	}
 
-	private void Exit(String choice) throws FileNotFoundException, InterruptedException {
+	private void Exit(String choice) throws IOException, InterruptedException {
 		if (choice.equals(MAIN_MENU_EXIT)) { // this is what happens if you select 3 on the main menu
 			Scanner opt3 = new Scanner(System.in);
-			System.out.println("Are you sure you want to exit? Y or N:");
+			System.out.println("Are you sure you want to exit? :");
 			String rUSure = opt3.nextLine();
 			if (rUSure.equalsIgnoreCase("n") || rUSure.equalsIgnoreCase("no")) {
 				this.run();
@@ -96,8 +107,6 @@ public class VendingMachineCLI {
 					returningBalance();
 				}
 				System.out.println("Thank you for your purchase! Goodbye!");
-			} else {
-				System.out.println("Invalid option. Please try again.");
 			}
 		}
 	}
@@ -112,7 +121,7 @@ public class VendingMachineCLI {
 		} //ends feed money
 	}
 
-	private void PurchaseMenuOption2(String purchaseChoice) throws FileNotFoundException, InterruptedException {
+	private void PurchaseMenuOption2(String purchaseChoice) throws IOException, InterruptedException {
 		if (purchaseChoice.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
 			while (true) {
 				System.out.println("Please select a product from the list below.");
@@ -128,21 +137,22 @@ public class VendingMachineCLI {
 				System.out.println("Enter Item Code: ");
 				String codeEntered = itemSelect.nextLine().toUpperCase();
 				VendingMachineItem item = this.menu.getItem(codeEntered);
-				if(item == null){
-					System.out.println("Invalid item option. Please enter valid item option.");
+				if(!codeEntered.equals(item)) {
+					System.out.println("Code number invalid. Please enter a valid code number.");
 				}
-				if (item != null) {
-					double price = item.getItemPrice();
-					if (balance <= 0) {
-						System.out.println("Please insert more money.");
-					} else {
-						balance = this.cashInput - price;
-						System.out.println(item.getItemName() + " has been dispensed.");
-						String soundBite = VendingMachineItem.GetSound(itemType);
-						System.out.println(soundBite);
-						System.out.println("You have $" + this.balance + " remaining.");
-						System.out.println();
+				double price = item.getItemPrice();
+				if (balance <= 0) {
+					System.out.println("Please insert more money.");
+				} else {
+					balance = this.cashInput - price;
+					try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
+						writer.println(dateTime.format(now) + item.getItemName() + cashInput + balance);
 					}
+					System.out.println(item.getItemName() + " has been dispensed.");
+					String soundBite = VendingMachineItem.GetSound(itemType);
+					System.out.println(soundBite);
+					System.out.println("You have $" + this.balance + " remaining.");
+					System.out.println();
 				}
 				this.run(); //takes you back to the main menu (and you get to keep your money!)
 
@@ -155,7 +165,7 @@ public class VendingMachineCLI {
 			}
 		}
 	}
-	private void returningBalance() {
+	private void returningBalance() throws IOException {
 		double tracker = getBalance();
 
 		double totalQuartersToReturn = 0;
@@ -176,6 +186,9 @@ public class VendingMachineCLI {
 				totalNickelsToReturn++;
 				tracker -= nickel;
 			}
+			try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
+				writer.println(dateTime.format(now) + "GIVE GHANGE: " + balance + "0");
+			}
 		}
 		this.balance = 0;
 
@@ -184,15 +197,16 @@ public class VendingMachineCLI {
 
 	}
 
-	private void PurchaseMenuOption3(String purchaseChoice){
+
+	private void PurchaseMenuOption3(String purchaseChoice) throws IOException {
 		if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
 			returningBalance();
 		}
 
 	}
 
-	public void run() throws InterruptedException, FileNotFoundException {
-		this.menuOptions = new File("capstone\\vendingmachine.csv");
+	public void run() throws InterruptedException, IOException {
+		this.menuOptions = new File("capstone/vendingmachine.csv");
 
 		while (true) {
 			String choice = (String) this.menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
@@ -216,10 +230,11 @@ public class VendingMachineCLI {
 		}
 	}
 
-	public static void main(String[] args) throws InterruptedException, FileNotFoundException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 		Menu menu = new Menu(System.in, System.out);
 		VendingMachineCLI cli = new VendingMachineCLI(menu);
 		cli.run();
-	}
+
+		}
 
 }
