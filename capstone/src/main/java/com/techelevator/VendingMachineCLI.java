@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.io.*;
+import java.text.DecimalFormat;
 import com.techelevator.VendingMachineItem;
 
 
@@ -30,9 +31,10 @@ public class VendingMachineCLI {
 	private double balance;
 	private File menuOptions;
 	private double cashInput;
-	File vendingLog = new File("capstone/vendinglog.log");
+	File vendingLog = new File("C:\\Users\\Jon\\Desktop\\Projects\\module-1-capstone\\capstone\\vendinglog.log");
 	DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 	LocalDateTime now = LocalDateTime.now();
+	DecimalFormat df = new DecimalFormat("0.00");
 
 	//getter & setter methods
 	public double getBalance() {
@@ -155,12 +157,12 @@ public class VendingMachineCLI {
 					if (balance >= item.getItemPrice()){
 						balance = this.cashInput - price;
 						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
-							writer.println(dateTime.format(now) + " " + item.getItemName() + cashInput + balance);
+							writer.println(dateTime.format(now) + " " + item.getItemName() + df.format(cashInput) + df.format(balance));
 						}
 						System.out.println(item.getItemName() + " has been dispensed.");
 						String soundBite = VendingMachineItem.GetSound(itemType);
 						System.out.println(soundBite);
-						System.out.println("You have $" + this.balance + " remaining.");
+						System.out.println("You have $" + df.format(this.balance) + " remaining.");
 						System.out.println();
 					}
 				}
@@ -198,7 +200,7 @@ public class VendingMachineCLI {
 			}
 			}
 		try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-			writer.println(dateTime.format(now) + " GIVE GHANGE: " + balance + " 0");
+			writer.println(dateTime.format(now) + " GIVE GHANGE: " + df.format(this.balance) + " 0");
 		}
 		this.balance = 0;
 
@@ -216,7 +218,7 @@ public class VendingMachineCLI {
 	}
 
 	public void run() throws InterruptedException, IOException {
-		this.menuOptions = new File("capstone/vendingmachine.csv");
+		this.menuOptions = new File("C:\\Users\\Jon\\Desktop\\Projects\\module-1-capstone\\capstone\\vendingmachine.csv");
 
 		while (true) {
 			String choice = (String) this.menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
