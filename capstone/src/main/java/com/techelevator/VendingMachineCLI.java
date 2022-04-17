@@ -69,7 +69,7 @@ public class VendingMachineCLI {
 					}
 				}
 				else {
-					System.out.println("Please enter valid bills");
+					System.out.println("Invalid input, please try again.");
 				}
 
 			}
@@ -146,9 +146,13 @@ public class VendingMachineCLI {
 				}
 				if(item != null){
 					double price = item.getItemPrice();
+					if(balance < item.getItemPrice()) {
+						System.out.println("Not enough money, please insert more money.");
+					}
 					if (balance <= 0) {
 						System.out.println("Please insert more money.");
-					} else {
+					}
+					if (balance >= item.getItemPrice()){
 						balance = this.cashInput - price;
 						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
 							writer.println(dateTime.format(now) + " " + item.getItemName() + cashInput + balance);
