@@ -147,7 +147,7 @@ public class VendingMachineCLI {
 				} else {
 					balance = this.cashInput - price;
 					try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-						writer.println(dateTime.format(now) + " " + item.getItemName() + cashInput + balance);
+						writer.println(dateTime.format(now) + " " + item.getItemName() + " " + cashInput + " " + balance);
 					}
 					System.out.println(item.getItemName() + " has been dispensed.");
 					String soundBite = VendingMachineItem.GetSound(itemType);
