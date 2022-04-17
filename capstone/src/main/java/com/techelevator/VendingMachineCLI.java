@@ -63,7 +63,7 @@ public class VendingMachineCLI {
 					String addMoreMoney = scanner.nextLine();
 					addMoreMoney = addMoreMoney.toLowerCase();
 					try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-						writer.println(dateTime.format(now) +  " | FEED MONEY: | " + cashInput + " | " + balance);
+						writer.println(dateTime.format(now) +  " FEED MONEY: " + cashInput + " " + balance);
 					}
 
 					if (addMoreMoney.contentEquals("n")) {
@@ -157,7 +157,7 @@ public class VendingMachineCLI {
 					if (balance >= item.getItemPrice()){
 						balance = this.cashInput - price;
 						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
-							writer.println(dateTime.format(now) + " | " + item.getItemName() + " | " + df.format(cashInput) + " | " + df.format(balance));
+							writer.println(dateTime.format(now) + " " + item.getItemName() + " " + df.format(cashInput) + " " + df.format(balance));
 						}
 						System.out.println(item.getItemName() + " has been dispensed.");
 						String soundBite = VendingMachineItem.GetSound(itemType);
