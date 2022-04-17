@@ -17,8 +17,8 @@ public class Menu {
 	private HashMap<String, VendingMachineItem> vendingMachineItems;
 
 	public Menu(InputStream input, OutputStream output) {
-		this.out = new PrintWriter(output);
-		this.in = new Scanner(input);
+		this.out = new PrintWriter(output);              //writes menu options
+		this.in = new Scanner(input);                   //takes in input
 		this.vendingMachineItems = new HashMap<String, VendingMachineItem>(){};
 		this.vendingMachineItems.put("A1", new VendingMachineItem("Potato Crisps", 3.05, "Chip", 5));
 		this.vendingMachineItems.put("A2", new VendingMachineItem("Stackers",1.45, "Chip", 5));
