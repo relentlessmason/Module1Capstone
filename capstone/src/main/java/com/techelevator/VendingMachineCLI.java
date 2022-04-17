@@ -46,8 +46,8 @@ public class VendingMachineCLI {
 				String cash = scanner.nextLine();
 				double doubleCash = Double.parseDouble(cash); // takes the user input and parses in into a usable double
 
-				this.cashInput = this.cashInput + doubleCash; // calculates balance available to make purchases
-				System.out.println("You have $" + this.cashInput + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
+				this.balance = this.cashInput + doubleCash; // calculates balance available to make purchases
+				System.out.println("You have $" + this.balance + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
 				String addMoreMoney = scanner.nextLine();
 				addMoreMoney = addMoreMoney.toLowerCase();
 				if(addMoreMoney.contentEquals("n")){
@@ -120,14 +120,14 @@ public class VendingMachineCLI {
 				String codeEntered = itemSelect.nextLine().toUpperCase();
 				VendingMachineItem item = this.menu.getItem(codeEntered);
 				double price = item.getItemPrice();
-				balance = cashInput - price;
+				balance = this.cashInput - price;
 				if (balance <= 0) {
 					System.out.println("Please insert more money.");
 				} else {
 					System.out.println(item.getItemName() + " has been dispensed.");
 					String soundBite = VendingMachineItem.GetSound();
 					System.out.println(soundBite);
-					System.out.println("You have $" + balance + " remaining.");
+					System.out.println("You have $" + this.balance + " remaining.");
 					System.out.println();
 				}
 				this.run(); //takes you back to the main menu (and you get to keep your money!)
@@ -173,7 +173,6 @@ public class VendingMachineCLI {
 	}
 
 	public void run() throws InterruptedException, FileNotFoundException {
-		System.out.println("[generic welcome message]");
 		this.menuOptions = new File("capstone\\vendingmachine.csv");
 
 		while (true) {
@@ -191,14 +190,12 @@ public class VendingMachineCLI {
 			if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				String purchaseChoice  = (String) this.menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 				// this ^ line of code makes it possible to enter the purchasing screen
-
 				PurchaseMenuOption1(purchaseChoice);
 				PurchaseMenuOption2(purchaseChoice);
 				PurchaseMenuOption3(purchaseChoice);
 			}
 		}
 	}
-
 
 	public static void main(String[] args) throws InterruptedException, FileNotFoundException {
 		Menu menu = new Menu(System.in, System.out);
