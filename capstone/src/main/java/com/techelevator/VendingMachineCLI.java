@@ -100,7 +100,7 @@ public class VendingMachineCLI {
 	private void Exit(String choice) throws IOException, InterruptedException {
 		if (choice.equals(MAIN_MENU_EXIT)) { // this is what happens if you select 3 on the main menu
 			Scanner opt3 = new Scanner(System.in);
-			System.out.println("Are you sure you want to exit?");
+			System.out.println("Are you sure you want to exit? :");
 			String rUSure = opt3.nextLine();
 			if (rUSure.equalsIgnoreCase("n") || rUSure.equalsIgnoreCase("no")) {
 				this.run();
@@ -154,24 +154,26 @@ public class VendingMachineCLI {
 					if (balance <= 0) {
 						System.out.println("Please insert more money.");
 					}
-					if (balance >= item.getItemPrice()) {
+					if (balance >= item.getItemPrice()){
 						balance = this.cashInput - price;
-						item.remainingStock--;
-						if (item.remainingStock <= 0) {
-							System.out.println("Out of stock. please make a different selection");
-						} else {
-							try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
-								writer.println(dateTime.format(now) + " " + item.getItemName() + df.format(cashInput) + df.format(balance));
-							}
-							System.out.println(item.getItemName() + " has been dispensed for $" + item.getItemPrice() + ".");
-							String soundBite = VendingMachineItem.GetSound(itemType);
-							System.out.println(soundBite);
-							System.out.println("You have $" + df.format(this.balance) + " remaining.");
-							System.out.println();
+						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
+							writer.println(dateTime.format(now) + " " + item.getItemName() + df.format(cashInput) + df.format(balance));
 						}
+						System.out.println(item.getItemName() + " has been dispensed.");
+						String soundBite = VendingMachineItem.GetSound(itemType);
+						System.out.println(soundBite);
+						System.out.println("You have $" + df.format(this.balance) + " remaining.");
+						System.out.println();
 					}
 				}
 				this.run(); //takes you back to the main menu (and you get to keep your money!)
+
+				//	System.out.println("Make another purchase?");
+				//	Scanner makeNewPurchase = new Scanner(System.in);
+				// if (makeNewPurchase.equals("y") || makeNewPurchase.equals("Y")) {
+				//		System.out.println(PURCHASE_MENU_OPTIONS);
+				// }
+
 			}
 		}
 	}
