@@ -135,33 +135,29 @@ public class VendingMachineCLI {
 				fileScanner.close();
 				Scanner itemSelect = new Scanner(System.in);
 
-				System.out.println("Enter Item Code: ");
+				System.out.println("Enter Item Location: ");
 				String codeEntered = itemSelect.nextLine().toUpperCase();
 				VendingMachineItem item = this.menu.getItem(codeEntered);
-				if(!codeEntered.equals(item)) {
-					System.out.println("Code number invalid. Please enter a valid code number.");
+				if(item == null) {
+					System.out.println("Item location invalid. Please enter a valid code location.");
 				}
-				double price = item.getItemPrice();
-				if (balance <= 0) {
-					System.out.println("Please insert more money.");
-				} else {
-					balance = this.cashInput - price;
-					try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-						writer.println(dateTime.format(now) + " " + item.getItemName() + cashInput + balance);
+				if (item != null) {
+					double price = item.getItemPrice();
+					if (balance <= 0) {
+						System.out.println("Please insert more money.");
+					} else {
+						balance = this.cashInput - price;
+						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
+							writer.println(dateTime.format(now) + " " + item.getItemName() + cashInput + balance);
+						}
+						System.out.println(item.getItemName() + " has been dispensed for $" + item.getItemPrice() + ".");
+						String soundBite = VendingMachineItem.GetSound(itemType);
+						System.out.println(soundBite);
+						System.out.println("You have $" + this.balance + " remaining.");
+						System.out.println();
 					}
-					System.out.println(item.getItemName() + " has been dispensed.");
-					String soundBite = VendingMachineItem.GetSound(itemType);
-					System.out.println(soundBite);
-					System.out.println("You have $" + this.balance + " remaining.");
-					System.out.println();
 				}
 				this.run(); //takes you back to the main menu (and you get to keep your money!)
-
-				//	System.out.println("Make another purchase?");
-				//	Scanner makeNewPurchase = new Scanner(System.in);
-				// if (makeNewPurchase.equals("y") || makeNewPurchase.equals("Y")) {
-				//		System.out.println(PURCHASE_MENU_OPTIONS);
-				// }
 
 			}
 		}
@@ -195,6 +191,7 @@ public class VendingMachineCLI {
 
 		System.out.println("Your change is " + totalQuartersToReturn + " quarters, " + totalDimesToReturn +
 				" dimes, " + "and " + totalNickelsToReturn + " nickles.");
+		System.out.println("Your new balance is :" + getBalance());
 
 	}
 
@@ -222,8 +219,7 @@ public class VendingMachineCLI {
 			this.cashInput = getBalance(); //we need this variable for a few places in the money handling section below
 
 			if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				String purchaseChoice  = (String) this.menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-				// this ^ line of code makes it possible to enter the purchasing screen
+				String purchaseChoice  = (String) this.menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS); //  enters purchasing screen
 				PurchaseMenuOption1(purchaseChoice);
 				PurchaseMenuOption2(purchaseChoice);
 				PurchaseMenuOption3(purchaseChoice);
@@ -235,7 +231,5 @@ public class VendingMachineCLI {
 		Menu menu = new Menu(System.in, System.out);
 		VendingMachineCLI cli = new VendingMachineCLI(menu);
 		cli.run();
-
-		}
-
+	}
 }
