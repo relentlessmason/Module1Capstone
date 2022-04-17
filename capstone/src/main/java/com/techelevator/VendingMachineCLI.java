@@ -109,6 +109,9 @@ public class VendingMachineCLI {
 				}
 				System.out.println("Thank you for your purchase! Goodbye!");
 			}
+			else {
+				System.out.println("Invalid input. Please enter valid input.");
+			}
 		}
 	}
 
@@ -138,22 +141,24 @@ public class VendingMachineCLI {
 				System.out.println("Enter Item Code: ");
 				String codeEntered = itemSelect.nextLine().toUpperCase();
 				VendingMachineItem item = this.menu.getItem(codeEntered);
-				if(!codeEntered.equals(item)) {
+				if(item == null) {
 					System.out.println("Code number invalid. Please enter a valid code number.");
 				}
-				double price = item.getItemPrice();
-				if (balance <= 0) {
-					System.out.println("Please insert more money.");
-				} else {
-					balance = this.cashInput - price;
-					try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-						writer.println(dateTime.format(now) + " " + item.getItemName() + cashInput + balance);
+				if(item != null){
+					double price = item.getItemPrice();
+					if (balance <= 0) {
+						System.out.println("Please insert more money.");
+					} else {
+						balance = this.cashInput - price;
+						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
+							writer.println(dateTime.format(now) + " " + item.getItemName() + cashInput + balance);
+						}
+						System.out.println(item.getItemName() + " has been dispensed.");
+						String soundBite = VendingMachineItem.GetSound(itemType);
+						System.out.println(soundBite);
+						System.out.println("You have $" + this.balance + " remaining.");
+						System.out.println();
 					}
-					System.out.println(item.getItemName() + " has been dispensed.");
-					String soundBite = VendingMachineItem.GetSound(itemType);
-					System.out.println(soundBite);
-					System.out.println("You have $" + this.balance + " remaining.");
-					System.out.println();
 				}
 				this.run(); //takes you back to the main menu (and you get to keep your money!)
 
