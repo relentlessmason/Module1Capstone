@@ -1,7 +1,7 @@
 package com.techelevator;
 
 public class VendingMachineItem {
-    public String itemName;
+    public  String itemName;
     public double itemPrice;
     public static String itemType;
     public int remainingStock;
@@ -13,7 +13,7 @@ public class VendingMachineItem {
         this.remainingStock	= remainingStock;
     }
 
-    public String getItemName() {
+    public  String getItemName() {
         return itemName;
     }
 

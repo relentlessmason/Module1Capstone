@@ -39,6 +39,7 @@ public class Menu {
 
 	}
 
+
 	public VendingMachineItem getItem(String key) {
 		return this.vendingMachineItems.get(key);
 	}
