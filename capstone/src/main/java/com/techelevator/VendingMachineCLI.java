@@ -86,7 +86,7 @@ public class VendingMachineCLI {
 	private void Exit(String choice) throws FileNotFoundException, InterruptedException {
 		if (choice.equals(MAIN_MENU_EXIT)) { // this is what happens if you select 3 on the main menu
 			Scanner opt3 = new Scanner(System.in);
-			System.out.println("Are you sure you want to exit? :");
+			System.out.println("Are you sure you want to exit? Y or N:");
 			String rUSure = opt3.nextLine();
 			if (rUSure.equalsIgnoreCase("n") || rUSure.equalsIgnoreCase("no")) {
 				this.run();
@@ -96,6 +96,8 @@ public class VendingMachineCLI {
 					returningBalance();
 				}
 				System.out.println("Thank you for your purchase! Goodbye!");
+			} else {
+				System.out.println("Invalid option. Please try again.");
 			}
 		}
 	}
@@ -126,9 +128,10 @@ public class VendingMachineCLI {
 				System.out.println("Enter Item Code: ");
 				String codeEntered = itemSelect.nextLine().toUpperCase();
 				VendingMachineItem item = this.menu.getItem(codeEntered);
-				if(!codeEntered.equals(item)) {
-					System.out.println("Code number invalid. Please enter a valid code number.");
-				} else {
+				if(item == null){
+					System.out.println("Invalid item option. Please enter valid item option.");
+				}
+				if (item != null) {
 					double price = item.getItemPrice();
 					if (balance <= 0) {
 						System.out.println("Please insert more money.");
