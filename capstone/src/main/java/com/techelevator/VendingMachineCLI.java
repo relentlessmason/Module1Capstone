@@ -82,7 +82,7 @@ public class VendingMachineCLI {
 		}
 	}
 
-	private void GetMainMenuOptionDisplayItems(String choice) throws FileNotFoundException{
+	private void GetMainMenuOptionDisplayItems(String choice) throws IOException, InterruptedException {
 		if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 			try {
 				Scanner fileScanner = new Scanner(this.menuOptions); // while loop prints the menu options out for customer
@@ -95,6 +95,7 @@ public class VendingMachineCLI {
 			} catch (FileNotFoundException e) {
 				throw e;
 			}
+			this.run();
 		}
 	}
 
