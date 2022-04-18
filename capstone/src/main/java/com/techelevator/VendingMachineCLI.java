@@ -165,15 +165,14 @@ public class VendingMachineCLI {
 						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
 							writer.println(dateTime.format(now) + " " + item.getItemName() + df.format(cashInput) + df.format(balance));
 						}
-						System.out.println(item.getItemName() + " has been dispensed for $" + item.getItemPrice() + ".");
-						String soundBite = item.GetSound(itemType);
+						System.out.println(item.getItemName() + " has been dispensed for $" + df.format(item.getItemPrice()) + ".");
+						String soundBite = item.GetSound(VendingMachineItem.itemType);
 						System.out.println(soundBite);
 						System.out.println("You have $" + df.format(this.balance) + " remaining.");
 						System.out.println();
 					}
 				}
-				this.run(); //takes you back to the main menu (and you get to keep your money!)
-
+				return;
 			}
 		}
 	}
