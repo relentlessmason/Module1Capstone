@@ -13,9 +13,6 @@ import java.text.DecimalFormat;
 import com.techelevator.VendingMachineItem;
 
 
-import static com.techelevator.VendingMachineItem.itemType;
-
-
 public class VendingMachineCLI {
 
 	//variables
@@ -52,14 +49,14 @@ public class VendingMachineCLI {
 		try {
 			Scanner scanner = new Scanner(System.in);
 			while (true) {
-				System.out.println("Your balance is: " + getBalance());
+				System.out.println("Your balance is: " +  df.format(getBalance()));
 				System.out.println();
 				System.out.println("Please enter the amount of cash you wish to input: (1, 2, 5, 10)");
 				String cash = scanner.nextLine();
 				double doubleCash = Double.parseDouble(cash); // takes the user input and parses in into a usable double
 				if(cash.equals("1") || cash.equals("2") || cash.equals("5") || cash.equals("10")) {
 					this.balance = this.cashInput + doubleCash; // calculates balance available to make purchases
-					System.out.println("You have $" + this.balance + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
+					System.out.println("You have $" +  df.format(this.balance) + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
 					String addMoreMoney = scanner.nextLine();
 					addMoreMoney = addMoreMoney.toLowerCase();
 					if(addMoreMoney.contentEquals("y")) {
@@ -166,7 +163,7 @@ public class VendingMachineCLI {
 							writer.println(dateTime.format(now) + " " + item.getItemName() + df.format(cashInput) + df.format(balance));
 						}
 						System.out.println(item.getItemName() + " has been dispensed for $" + df.format(item.getItemPrice()) + ".");
-						String soundBite = item.GetSound(VendingMachineItem.itemType);
+						String soundBite = item.GetSound();
 						System.out.println(soundBite);
 						System.out.println("You have $" + df.format(this.balance) + " remaining.");
 						System.out.println();

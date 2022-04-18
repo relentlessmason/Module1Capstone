@@ -29,7 +29,7 @@ public class Menu {
 		this.vendingMachineItems.put("B3", new VendingMachineItem("Wonka Bar", 1.50,"Candy",5));
 		this.vendingMachineItems.put("B4", new VendingMachineItem("Crunchie", 1.75,"Candy",5));
 		this.vendingMachineItems.put("C1", new VendingMachineItem("Cola", 1.25,"Drink",5));
-		this.vendingMachineItems.put("C2", new VendingMachineItem("Dr. Salt", 1.50,"Drinkk",5));
+		this.vendingMachineItems.put("C2", new VendingMachineItem("Dr. Salt", 1.50,"Drink",5));
 		this.vendingMachineItems.put("C3", new VendingMachineItem("Mountain Melter", 1.50,"Drink",5));
 		this.vendingMachineItems.put("C4", new VendingMachineItem("Heavy", 1.50,"Drink",5));
 		this.vendingMachineItems.put("D1", new VendingMachineItem("U-Chews", .85,"Gum",5));
