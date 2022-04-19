@@ -25,7 +25,7 @@ public class VendingMachineCLI {
 	private static final String PURCHASE_MENU_FINISH_TRANSACTION = "Finish Transaction";
 	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_FEED_MONEY, PURCHASE_MENU_SELECT_PRODUCT, PURCHASE_MENU_FINISH_TRANSACTION};
 	private Menu menu;
-	private double balance;
+	public double balance;
 	private File menuOptions;
 	private double cashInput;
 	File vendingLog = new File("capstone/log.txt");
@@ -44,43 +44,58 @@ public class VendingMachineCLI {
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
 	}
+	public VendingMachineCLI(){}
 
 	private void PrintBalance() throws Exception {
 		try {
-			Scanner scanner = new Scanner(System.in);
-			while (true) {
-				System.out.println("Your balance is: " +  df.format(getBalance()));
-				System.out.println();
-				System.out.println("Please enter the amount of cash you wish to input: (1, 2, 5, 10)");
-				String cash = scanner.nextLine();
-				double doubleCash = Double.parseDouble(cash); // takes the user input and parses in into a usable double
-				if(cash.equals("1") || cash.equals("2") || cash.equals("5") || cash.equals("10")) {
-					this.balance = this.cashInput + doubleCash; // calculates balance available to make purchases
-					System.out.println("You have $" +  df.format(this.balance) + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
-					String addMoreMoney = scanner.nextLine();
-					addMoreMoney = addMoreMoney.toLowerCase();
-					if(addMoreMoney.contentEquals("y")) {
-						System.out.println("Please enter the amount of cash you wish to input: (1, 2, 5, 10)");
-						double additionalMoney = Double.parseDouble(scanner.nextLine());
-						this.balance = this.balance + additionalMoney;
-					}
-					try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-						writer.println(dateTime.format(now) + " FEED MONEY: " + cashInput + " " + balance);
-					}
-					if (addMoreMoney.contentEquals("n")) {
-						break;
-					}
-				}
-				else {
-					System.out.println("Invalid input, please try again.");
-				}
-
+			checkingCorrectCurrency();
+			try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
+				writer.println(dateTime.format(now) + " FEED MONEY: " + cashInput + " " + balance);
+			} catch (Exception e) {
+				throw e;
 			}
 		}
-		catch(Exception e){
+		catch (Exception e) {
 			throw e;
 		}
 	}
+
+
+
+	//While
+	//Check 1,2,5,10
+		//add to balance
+	//otherwise
+		//bad input
+	//"Would you like to try again"
+	//If no
+		//break out
+
+	public void FeedMoneyChecking(String cash){
+		if (cash.equals("1") || cash.equals("2") || cash.equals("5") || cash.equals("10")) {
+			double doubleCash = Double.parseDouble(cash); // takes the user input and parses in into a usable double
+			this.balance = this.balance + doubleCash; // calculates balance available to make purchases
+			System.out.println("You have $" + df.format(this.balance));
+		} else {
+			System.out.println("Invalid input, please try again.");
+		}
+	}
+
+	private void checkingCorrectCurrency() {
+		while (true) {
+			System.out.println("Please enter the amount of cash you wish to input: (1, 2, 5, 10)");
+			Scanner scanner = new Scanner(System.in);
+			String cash = scanner.nextLine();
+			FeedMoneyChecking(cash);
+			System.out.println("You have $" + df.format(this.balance) + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
+			String userInput = scanner.nextLine();
+
+			if(userInput.equalsIgnoreCase("n")) {
+				break;
+			}
+		}
+	}
+
 
 	private void GetMainMenuOptionDisplayItems(String choice) throws IOException, InterruptedException {
 		if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
@@ -174,6 +189,7 @@ public class VendingMachineCLI {
 			}
 		}
 	}
+
 	private void returningBalance() throws IOException {
 		double tracker = getBalance();
 
@@ -195,10 +211,15 @@ public class VendingMachineCLI {
 				totalNickelsToReturn++;
 				tracker -= nickel;
 			}
-			}
+		}
+
 		try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
 			writer.println(dateTime.format(now) + " GIVE GHANGE: " + df.format(this.balance) + " 0");
 		}
+		catch(Exception e){
+			throw e;
+		}
+
 		this.balance = 0;
 		System.out.println("Your change is " + totalQuartersToReturn + " quarters, " + totalDimesToReturn +
 				" dimes, " + "and " + totalNickelsToReturn + " nickles.");
@@ -210,7 +231,6 @@ public class VendingMachineCLI {
 		if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
 			returningBalance();
 		}
-
 	}
 
 	public void run() throws InterruptedException, IOException {
@@ -248,6 +268,6 @@ public class VendingMachineCLI {
 		Menu menu = new Menu(System.in, System.out);
 		VendingMachineCLI cli = new VendingMachineCLI(menu);
 		cli.run();
-		}
+	}
 
 }
