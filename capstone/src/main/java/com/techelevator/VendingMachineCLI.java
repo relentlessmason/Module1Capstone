@@ -34,12 +34,13 @@ public class VendingMachineCLI {
 	DecimalFormat df = new DecimalFormat("0.00");
 
 	//getter & setter methods
+	private void returningBalance() {}
 	public double getBalance() {
 		return balance;
 	}
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
+//	public void setBalance(double balance) {
+//		this.balance = balance;
+//	}
 
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
@@ -60,22 +61,11 @@ public class VendingMachineCLI {
 		}
 	}
 
-
-
-	//While
-	//Check 1,2,5,10
-		//add to balance
-	//otherwise
-		//bad input
-	//"Would you like to try again"
-	//If no
-		//break out
-
 	public void FeedMoneyChecking(String cash){
 		if (cash.equals("1") || cash.equals("2") || cash.equals("5") || cash.equals("10")) {
 			double doubleCash = Double.parseDouble(cash); // takes the user input and parses in into a usable double
 			this.balance = this.balance + doubleCash; // calculates balance available to make purchases
-			System.out.println("You have $" + df.format(this.balance));
+//			System.out.println("You have $" + df.format(this.balance));
 		} else {
 			System.out.println("Invalid input, please try again.");
 		}
@@ -132,7 +122,6 @@ public class VendingMachineCLI {
 				}
 				System.out.println("Thank you for your purchase! Goodbye!");
 			}
-
 		}
 	}
 
@@ -170,11 +159,13 @@ public class VendingMachineCLI {
 					if(balance < item.getItemPrice()) {
 						System.out.println("Not enough money, please insert more money.");
 					}
-					if (balance <= 0) {
-						System.out.println("Please insert more money.");
+					if(item.remainingStock <= 0) {
+						System.out.println("Item out of stock, please make different selection");
 					}
-					if (balance >= item.getItemPrice()){
+					if (balance >= item.getItemPrice() && item.remainingStock > 0){
 						balance = this.cashInput - price;
+						item.remainingStock--;
+
 						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
 							writer.println(dateTime.format(now) + " " + item.getItemName() + " " + df.format(cashInput) + " " + df.format(balance));
 						}
@@ -190,9 +181,8 @@ public class VendingMachineCLI {
 		}
 	}
 
-	private void returningBalance() throws IOException {
+	private void calculatingBalance() {
 		double tracker = getBalance();
-
 		double totalQuartersToReturn = 0;
 		double totalDimesToReturn = 0;
 		double totalNickelsToReturn = 0;
@@ -212,14 +202,16 @@ public class VendingMachineCLI {
 				tracker -= nickel;
 			}
 		}
+	}
 
+	private void returningBalance(double totalQuartersToReturn, double totalDimesToReturn, double totalNickelsToReturn) throws IOException {
+		calculatingBalance();
 		try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
 			writer.println(dateTime.format(now) + " GIVE GHANGE: " + df.format(this.balance) + " 0");
 		}
 		catch(Exception e){
 			throw e;
 		}
-
 		this.balance = 0;
 		System.out.println("Your change is " + totalQuartersToReturn + " quarters, " + totalDimesToReturn +
 				" dimes, " + "and " + totalNickelsToReturn + " nickles.");
