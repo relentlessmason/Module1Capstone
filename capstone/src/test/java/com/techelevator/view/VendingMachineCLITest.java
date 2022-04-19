@@ -30,20 +30,5 @@ public class VendingMachineCLITest {
         Assert.assertTrue(test.balance == 0);
     }
 
-    @Test
-    public void choosingExitWithNotYOrN() throws IOException, InterruptedException {
-        VendingMachineCLI test = new VendingMachineCLI();
-        String rUSure = "c";
-        test.exit(rUSure);
-        Assert.assertEquals("Invalid input. Please enter valid input.", "Invalid input. Please enter valid input." );
-    }
-    @Test
-    public void choosingExitWithYOrN() throws IOException, InterruptedException {
-        VendingMachineCLI test = new VendingMachineCLI();
-        String rUSure = "y";
-        test.exit(rUSure);
-        Assert.assertEquals("Thank you for your purchase! Goodbye!", "Thank you for your purchase! Goodbye!");
-    }
-
 
 }
