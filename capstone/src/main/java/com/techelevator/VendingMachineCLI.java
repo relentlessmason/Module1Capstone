@@ -41,7 +41,7 @@ public class VendingMachineCLI {
 
 	private void printBalance() throws Exception {
 		try {
-			checkingCorrectCurrency();
+			checkingIfMoreMoneyAdded();
 			try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
 				writer.println(dateTime.format(now) + " FEED MONEY: " + cashInput + " " + balance);
 			} catch (Exception e) {
@@ -53,22 +53,21 @@ public class VendingMachineCLI {
 		}
 	}
 
-	public void feedMoneyChecking(String cash){
+	public void feedMoneyValid(String cash){
 		if (cash.equals("1") || cash.equals("2") || cash.equals("5") || cash.equals("10")) {
 			double doubleCash = Double.parseDouble(cash); // takes the user input and parses in into a usable double
 			this.balance = this.balance + doubleCash; // calculates balance available to make purchases
-//			System.out.println("You have $" + df.format(this.balance));
 		} else {
 			System.out.println("Invalid input, please try again.");
 		}
 	}
 
-	private void checkingCorrectCurrency() {
+	private void checkingIfMoreMoneyAdded() {		//Will loop through feedMoneyValid and add to balance until user hits "N"
 		while (true) {
 			System.out.println("Please enter the amount of cash you wish to input: (1, 2, 5, 10)");
 			Scanner scanner = new Scanner(System.in);
 			String cash = scanner.nextLine();
-			feedMoneyChecking(cash);
+			feedMoneyValid(cash);
 			System.out.println("You have $" + df.format(this.balance) + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
 			String userInput = scanner.nextLine();
 
@@ -99,21 +98,21 @@ public class VendingMachineCLI {
 	public void exit(String choice) throws IOException, InterruptedException {
 		if (choice.equals(MAIN_MENU_EXIT)) { // this is what happens if you select 3 on the main menu
 			Scanner opt3 = new Scanner(System.in);
-			System.out.println("Are you sure you want to exit? Y or N :");
-			String rUSure = opt3.nextLine();
+			System.out.println("Are you sure you want to exit? Y or N :"); // prompts for Y or N
+			String rUSure = opt3.nextLine(); 	//User input of Y or N
 
-			if (rUSure.equalsIgnoreCase("n") || rUSure.equalsIgnoreCase("no")) {
+			if (rUSure.equalsIgnoreCase("n") || rUSure.equalsIgnoreCase("no")) { //if N, runs
 				this.run();
 			}
-			if(!rUSure.equalsIgnoreCase("y") && (!rUSure.equalsIgnoreCase("n"))) {
+			if(!rUSure.equalsIgnoreCase("y") && (!rUSure.equalsIgnoreCase("n"))) { // if not Y or N, returns invalid input.
 				System.out.println("Invalid input. Please enter valid input.");
 				return;
 			}
-			if (rUSure.equalsIgnoreCase("y") || rUSure.equalsIgnoreCase("yes")) {
+			if (rUSure.equalsIgnoreCase("y") || rUSure.equalsIgnoreCase("yes")) { // if Y, returns remaining balance.
 				if (getBalance() > 0.00) {
 					returningBalance();
 				}
-				System.out.println("Thank you for your purchase! Goodbye!");
+				System.out.println("Thank you for your purchase! Goodbye!"); // thanks the customer, and ends program.
 			}
 		}
 	}
@@ -130,10 +129,10 @@ public class VendingMachineCLI {
 
 	private void purchaseMenuOption2(String purchaseChoice) throws IOException, InterruptedException {
 		if (purchaseChoice.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
-			while (true) {
+			while (true) {  	//loops through the selection options until a selection of purchase or exit is made.
 				System.out.println("Please select a product from the list below.");
 				Scanner fileScanner = new Scanner(this.menuOptions);
-				while (fileScanner.hasNextLine()) {
+				while (fileScanner.hasNextLine()) {		//prints list of vending machine selections
 					String data =
 							fileScanner.nextLine();
 					System.out.println(data);
@@ -142,31 +141,30 @@ public class VendingMachineCLI {
 				Scanner itemSelect = new Scanner(System.in);
 
 				System.out.println("Enter Item Code: ");
-				String codeEntered = itemSelect.nextLine().toUpperCase();
+				String codeEntered = itemSelect.nextLine().toUpperCase(); // scans the input from the customer and sets it to codeEntered
 				VendingMachineItem item = this.menu.getItem(codeEntered);
-				if(item == null) {
+				if(item == null) {		//If item code doesn't exist, message prints invalid number.
 					System.out.println("Code number invalid. Please enter a valid code number.");
 				}
-				if(item != null){
+				if(item != null){				// Checks if item code does exist.
 					double price = item.getItemPrice();
-					if(balance < item.getItemPrice()) {
-						System.out.println("Not enough money, please insert more money.");
+					if(balance < item.getItemPrice()) { 		//then checks if customer has enough balance to cover item.
+						System.out.println("Not enough money, please insert more money."); //if not, message prints to insert more money.
 					}
 					if(item.remainingStock <= 0) {
-						System.out.println("Item out of stock, please make different selection");
+						System.out.println("Item out of stock, please make different selection");// If item is selected over 5 times, item will return out of stock.
 					}
-					if (balance >= item.getItemPrice() && item.remainingStock > 0){
-						balance = this.cashInput - price;
-						item.remainingStock--;
+					if (balance >= item.getItemPrice() && item.remainingStock > 0){ //If item is in stock, and balance covers it
+						balance = this.cashInput - price; // price is subtracted from balance
+						item.remainingStock--; 			  // and item is removed from stock
 
-						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
+						try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {  //adds to the log
 							writer.println(dateTime.format(now) + " " + item.getItemName() + " " + df.format(cashInput) + " " + df.format(balance));
 						}
-						System.out.println(item.getItemName() + " has been dispensed for $" + df.format(item.getItemPrice()) + ".");
-						String soundBite = item.GetSound();
-						System.out.println(soundBite);
-						System.out.println("You have $" + df.format(this.balance) + " remaining.");
-						System.out.println();
+						System.out.println(item.getItemName() + " has been dispensed for $" + df.format(item.getItemPrice()) + "."); //shows item is dispensed and price.
+						String soundBite = item.GetSound();			//specific item type dispense sound assigned to soundBite.
+						System.out.println(soundBite);				//returns soundBite
+						System.out.println("You have $" + df.format(this.balance) + " remaining."); //Shows remaining balance
 					}
 				}
 				return;

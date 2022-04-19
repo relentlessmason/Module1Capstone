@@ -18,7 +18,7 @@ public class VendingMachineCLITest {
     public void feedMoneyAccurateMoneyTest(){
         VendingMachineCLI test = new VendingMachineCLI();
         String cash = "5";
-        test.feedMoneyChecking(cash);
+        test.feedMoneyValid(cash);
         Assert.assertTrue(test.balance == 5);
     }
 
@@ -26,7 +26,7 @@ public class VendingMachineCLITest {
     public void feedMoneyFailedMoneyTest(){
         VendingMachineCLI test = new VendingMachineCLI();
         String cash = "c";
-        test.feedMoneyChecking(cash);
+        test.feedMoneyValid(cash);
         Assert.assertTrue(test.balance == 0);
     }
 
