@@ -21,9 +21,7 @@ public class VendingMachineItem {
         return itemPrice;
     }
 
-    public String getItemType() {
-        return itemType;
-    }
+    public String getItemType() {return itemType;}
 
     public int getRemainingStock() {
         return remainingStock;

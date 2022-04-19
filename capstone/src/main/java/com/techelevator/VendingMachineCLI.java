@@ -195,7 +195,7 @@ public class VendingMachineCLI {
 		}
 
 		try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
-			writer.println(dateTime.format(now) + " GIVE GHANGE: " + df.format(this.balance) + " 0");
+			writer.println(dateTime.format(now) + " GIVE CHANGE: " + df.format(this.balance) + " 0");
 		}
 		catch(Exception e){
 			throw e;
