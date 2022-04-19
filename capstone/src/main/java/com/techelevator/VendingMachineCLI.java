@@ -2,15 +2,11 @@ package com.techelevator;
 
 import com.techelevator.view.Menu;
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.io.*;
 import java.text.DecimalFormat;
-import com.techelevator.VendingMachineItem;
 
 
 public class VendingMachineCLI {
@@ -34,20 +30,16 @@ public class VendingMachineCLI {
 	DecimalFormat df = new DecimalFormat("0.00");
 
 	//getter & setter methods
-	private void returningBalance() {}
 	public double getBalance() {
 		return balance;
 	}
-//	public void setBalance(double balance) {
-//		this.balance = balance;
-//	}
 
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
 	}
 	public VendingMachineCLI(){}
 
-	private void PrintBalance() throws Exception {
+	private void printBalance() throws Exception {
 		try {
 			checkingCorrectCurrency();
 			try (PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))) {
@@ -61,7 +53,7 @@ public class VendingMachineCLI {
 		}
 	}
 
-	public void FeedMoneyChecking(String cash){
+	public void feedMoneyChecking(String cash){
 		if (cash.equals("1") || cash.equals("2") || cash.equals("5") || cash.equals("10")) {
 			double doubleCash = Double.parseDouble(cash); // takes the user input and parses in into a usable double
 			this.balance = this.balance + doubleCash; // calculates balance available to make purchases
@@ -76,7 +68,7 @@ public class VendingMachineCLI {
 			System.out.println("Please enter the amount of cash you wish to input: (1, 2, 5, 10)");
 			Scanner scanner = new Scanner(System.in);
 			String cash = scanner.nextLine();
-			FeedMoneyChecking(cash);
+			feedMoneyChecking(cash);
 			System.out.println("You have $" + df.format(this.balance) + " to spend, would you like to add more?  Please select Yes (Y) or No (N).");
 			String userInput = scanner.nextLine();
 
@@ -87,7 +79,7 @@ public class VendingMachineCLI {
 	}
 
 
-	private void GetMainMenuOptionDisplayItems(String choice) throws IOException, InterruptedException {
+	private void getMainMenuOptionDisplayItems(String choice) throws IOException, InterruptedException {
 		if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 			try {
 				Scanner fileScanner = new Scanner(this.menuOptions); // while loop prints the menu options out for customer
@@ -104,7 +96,7 @@ public class VendingMachineCLI {
 		}
 	}
 
-	private void Exit(String choice) throws IOException, InterruptedException {
+	public void exit(String choice) throws IOException, InterruptedException {
 		if (choice.equals(MAIN_MENU_EXIT)) { // this is what happens if you select 3 on the main menu
 			Scanner opt3 = new Scanner(System.in);
 			System.out.println("Are you sure you want to exit? Y or N :");
@@ -115,6 +107,7 @@ public class VendingMachineCLI {
 			}
 			if(!rUSure.equalsIgnoreCase("y") && (!rUSure.equalsIgnoreCase("n"))) {
 				System.out.println("Invalid input. Please enter valid input.");
+				return;
 			}
 			if (rUSure.equalsIgnoreCase("y") || rUSure.equalsIgnoreCase("yes")) {
 				if (getBalance() > 0.00) {
@@ -125,17 +118,17 @@ public class VendingMachineCLI {
 		}
 	}
 
-	private void PurchaseMenuOption1(String purchaseChoice){
+	private void purchaseMenuOption1(String purchaseChoice){
 		if (purchaseChoice.equals(PURCHASE_MENU_FEED_MONEY)) {        //takes user to the place to feed in the monies
 			try{
-				PrintBalance();
+				printBalance();
 			} catch (Exception ex) {
 				System.err.println("Please Insert Valid Currency");
 			}
 		} //ends feed money
 	}
 
-	private void PurchaseMenuOption2(String purchaseChoice) throws IOException, InterruptedException {
+	private void purchaseMenuOption2(String purchaseChoice) throws IOException, InterruptedException {
 		if (purchaseChoice.equals(PURCHASE_MENU_SELECT_PRODUCT)) {
 			while (true) {
 				System.out.println("Please select a product from the list below.");
@@ -181,7 +174,7 @@ public class VendingMachineCLI {
 		}
 	}
 
-	private void calculatingBalance() {
+	private void returningBalance() throws IOException {
 		double tracker = getBalance();
 		double totalQuartersToReturn = 0;
 		double totalDimesToReturn = 0;
@@ -202,10 +195,7 @@ public class VendingMachineCLI {
 				tracker -= nickel;
 			}
 		}
-	}
 
-	private void returningBalance(double totalQuartersToReturn, double totalDimesToReturn, double totalNickelsToReturn) throws IOException {
-		calculatingBalance();
 		try(PrintWriter writer = new PrintWriter(new FileWriter(vendingLog, true))){
 			writer.println(dateTime.format(now) + " GIVE GHANGE: " + df.format(this.balance) + " 0");
 		}
@@ -219,7 +209,7 @@ public class VendingMachineCLI {
 	}
 
 
-	private void PurchaseMenuOption3(String purchaseChoice) throws IOException {
+	private void purchaseMenuOption3(String purchaseChoice) throws IOException {
 		if (purchaseChoice.equals(PURCHASE_MENU_FINISH_TRANSACTION)) {
 			returningBalance();
 		}
@@ -231,21 +221,21 @@ public class VendingMachineCLI {
 		while (true) {
 			String choice = (String) this.menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 			try {
-				GetMainMenuOptionDisplayItems(choice);
+				getMainMenuOptionDisplayItems(choice);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
 
-			Exit(choice);
+			exit(choice);
 
 			this.cashInput = getBalance(); //we need this variable for a few places in the money handling section below
 
 			if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				String purchaseChoice  = (String) this.menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 				// this ^ line of code makes it possible to enter the purchasing screen
-				PurchaseMenuOption1(purchaseChoice);
-				PurchaseMenuOption2(purchaseChoice);
-				PurchaseMenuOption3(purchaseChoice);
+				purchaseMenuOption1(purchaseChoice);
+				purchaseMenuOption2(purchaseChoice);
+				purchaseMenuOption3(purchaseChoice);
 			} else {
 				return;
 			}
